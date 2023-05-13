@@ -33,7 +33,7 @@ class Books extends Model
     {
         return $this->hasMany(User::class);
     }
-    public function users()
+    public function Reviews()
     {
         return $this->belongsTo(Reviews::class);
     }
