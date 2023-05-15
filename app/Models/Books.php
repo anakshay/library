@@ -31,12 +31,13 @@ class Books extends Model
 
     public function user()
     {
-        return $this->hasMany(User::class);
+        return $this->hasMany(User::class, 'id','users_id');
     }
-    public function Reviews()
+    public function Reviewsed()
     {
-        return $this->belongsTo(Reviews::class);
+        return $this->belongsTo(Reviews::class,'id','books_id');
     }
+    
     public function category()
     {
         return  $this->hasMany(Category::class, 'id', 'categories_id');
@@ -48,6 +49,8 @@ class Books extends Model
         return  $this->hasMany(Genres::class,  'id','genres_id');
     }
 
-    
+        public function getDescriptionAttribute($value){
+            return  ucfirst($value);
+        }
    
 }

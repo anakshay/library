@@ -56,9 +56,14 @@ class LibarayController extends Controller
        
         return  redirect('view/details' . "/" . $id);
     }
-    public function review($id)
+    public function review(Request $request)
     {
-        return view('library.review', compact('id'));
+        $ids = $request->book_id;
+        // dd($id);
+        $id = (int)$ids;
+        // dd($id);
+
+        return view('library.review',compact('id'));
     }
     public function  reviewsave(Request $request, $id)
     {
@@ -112,5 +117,9 @@ class LibarayController extends Controller
         // dd($data);
 
 
+    }
+    public function userreview(){
+       $data = Reviews::with('Review')->get();
+       dd($data);
     }
 }

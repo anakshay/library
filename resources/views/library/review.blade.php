@@ -133,7 +133,7 @@
                         <h5 class="modal-title" style="" id="exampleModalLongTitle">Review</h5>
                     </div>
                     <div class="modal-body ">
-
+                        
                         <h5 class="modal-title" style="" id="exampleModalLongTitle">rating</h5>
                         <form action="{{ url('review/save') }}/{{$id}}" method="POST">
                             @csrf
@@ -154,7 +154,7 @@
                                         <input type="radio" id="star2" class="rate" name="rating"
                                             value="2">
                                         <label for="star2" title="text">2 stars</label>
-                                        <input type="radio" id="star1" class="rate" name="rating"
+                                        <input type="radio" id="star1" checked class="rate" name="rating"
                                             value="1" />
                                         <label for="star1" title="text">1 star</label>
                                     </div>

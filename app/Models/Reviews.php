@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Model\books;
+use App\Models\Books;
 class Reviews extends Model
 {
     use HasFactory;
@@ -16,9 +16,9 @@ class Reviews extends Model
         'comment',
         'books_id'
     ];
-    public function books()
+    public function Review()
     {
-        return $this->hasMany(Books::class);
+        return $this->hasMany(Books::class ,'id','books_id');
     }
     
 }

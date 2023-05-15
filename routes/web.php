@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LibarayController;
 use Illuminate\Support\Facades\Route;
 use  Illuminate\Support\Facades\Auth;
@@ -25,9 +26,11 @@ Route::get('/home', [LibarayController::class, 'attach'])->name('home');
 // Route::get('add',[LibarayController::class,'addbooks']);
 Route::get('library',[LibarayController::class,'attach']);
 Route::group(['middleware' => 'auth'], function (){
-Route::get('review/{id}',[LibarayController::class,'review']);
+Route::get('review',[LibarayController::class,'review']);
 Route::post('review/save/{id}',[LibarayController::class,'reviewsave']);
 });
 // ->middleware('auth')
 Route::get('cancle/{id}',[LibarayController::class,'cancle']);
 Route::get('view/details/{id}',[LibarayController::class,'viewdetails']);
+Route::get('check',[LibarayController::class,'userreview']);
+ 
