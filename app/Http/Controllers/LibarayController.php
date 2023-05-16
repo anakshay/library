@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ReviewRequest;
+use App\Jobs\feedbackmail;
 use App\Jobs\ProcessPodcast;
 use App\Mail\SendMail;
 use App\Models\Authors;
@@ -10,7 +12,9 @@ use App\Models\Category;
 use App\Models\Reviews;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Contracts\Database\Eloquent\Builder;
 use PharIo\Manifest\Author;
 
 class LibarayController extends Controller
@@ -43,17 +47,38 @@ class LibarayController extends Controller
     public function viewdetails($id)
     {
         $singlebook = Books::where('id', $id)->with(['relate', 'category', 'generes'])->first();
-        $reviews = Reviews::where('books_id',$id)->get();
-        // dd($reviews->toArray());
-       
-        // dd($singlebook);
-        // echo "<pre>";
-        // print_r($singlebook->toarray()); 
-        return view('library.singlebook', compact('singlebook','reviews'));
+
+
+        $reviews = Reviews::where('books_id', $id)->get();
+
+
+        // $total_reponse = 2;
+        // $total_stars = 2;
+        // if(!($total_reponse == 2 && $total_stars == 2)) {
+
+
+        $total_reponse = count($reviews);
+
+        $total_stars = Reviews::where('books_id', $id)->sum('rating');
+        // dd($total_reponse);
+        // dd($total_stars);
+        if (!($total_reponse == 0 && $total_stars == 0)) {
+
+            $overall = $total_stars / $total_reponse;
+
+            $overall_data = round($overall);
+
+            return view('library.singlebook', compact('singlebook', 'reviews', 'overall_data'));
+        } else {
+
+            return view('library.singlebook', compact('singlebook', 'reviews'));
+        }
+
+        // return $reviews;
     }
     public function cancle($id)
     {
-       
+
         return  redirect('view/details' . "/" . $id);
     }
     public function review(Request $request)
@@ -63,63 +88,58 @@ class LibarayController extends Controller
         $id = (int)$ids;
         // dd($id);
 
-        return view('library.review',compact('id'));
+        return view('library.review', compact('id'));
     }
-    public function  reviewsave(Request $request, $id)
+    public function  reviewsave(ReviewRequest $request, $id)
     {
-       
-      
-        // $data = $request->only(['rating', 'comment', 'name']);
-        // // dd($data);
-        //  Reviews::create($data);
         $data = User::where('id', $request->user_id)->first();
-        // dd($data->id);
-        $data1 = Books::where('id',$id)->first();
-        // dd($data1);
-        $data1->users_id = $data->id;
-        $data1->save();
+        $data1 = Books::where('id', $id)->first();
+        // dd($data->review_time );
+        if ($data->review_time == 1 && $data1->review_time == 1) {
+            // dd('nott alloww');
+            return redirect('view/details' . "/" . $id)->with('message', 'You have already reviewed this book');
+        } else {
 
-        $book = new Reviews;
-        $book->name = $data->name;
-        $book->comment = $request->comment;
-        $book->rating = $request->rating;
-        $book->books_id = $id;
-        $book->save();
+            // $data =  Auth::user()->id;
+            $data = User::where('id', $request->user_id)->first();
+            // dd($data);
+            $data->review_time = 1;
+            $data->update();
+            // dd($data->name);
+            $data1 = Books::where('id', $id)->first();
+            // dd($data1);
+            $data1->review_time = 1;
+            $data1->update();
 
-        $email = Books::with('relate')->get();
-        // dd($email);
-        foreach($email as $emails){
-            // dd($emails->relate);
 
-           foreach($emails->relate as $author_email){
-            // dd($emails);
-            $auth_email = $author_email->email;
-           }
+            $book = new Reviews;
+            $book->user_id  = $data->id;
+            $book->comment = $request->comment;
+            $book->rating = $request->rating;
+            $book->books_id = $id;
+            $book->save();
+
+            $email = Books::with('relate')->get();
+            // dd($email);
+            foreach ($email as $emails) {
+                // dd($emails->relate);
+
+                foreach ($emails->relate as $author_email) {
+                    // dd($emails);
+                    $auth_email = $author_email->email;
+                }
+            }
+
+            dispatch(new feedbackmail('akshayboy2002@gmail.com'))->delay(now()->addSeconds(5));
+
+            return redirect('view/details/' . $id);
         }
-       
-        // $data['email'] =   $auth_email;
-        // $data['title'] = 'thank you for your feedback';
-        $testMailData = [
-            'title' => 'thank you for ur feedback',
-            'body' => 'feedback : ' . $request->rating . 'Star and  the comment is : ' . $request->comment
-        ];
-
-        Mail::to("akshayboy2002@gmail.com")->send(new SendMail($testMailData));
-        // dispatch(new ProcessPodcast($request));
-
-        // Mail::send('feedbackMail', ['data' => $data], function ($message) use ($data) {
-        //     $message->to($data['email'])->subject($data['title']);
-        // });
-
-        return redirect('view/details/'. $id);
-
-        // $data  = Books::with(['relate', 'category', 'generes', ''])->get();
-        // dd($data);
-
-
     }
-    public function userreview(){
-       $data = Reviews::with('Review')->get();
-       dd($data);
-    }
+
+
+
+    // public function userreview(){
+    //    $data = Reviews::with('Review')->get();
+    //    dd($data);
+    // }
 }

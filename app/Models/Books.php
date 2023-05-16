@@ -29,11 +29,12 @@ class Books extends Model
     //     return $this->belongsToMany(Reviews::class, 'books_reviews','book_id','review_id');
     // }
 
+    
     public function user()
     {
         return $this->hasMany(User::class, 'id','users_id');
     }
-    public function Reviewsed()
+    public function reviewsed()
     {
         return $this->belongsTo(Reviews::class,'id','books_id');
     }

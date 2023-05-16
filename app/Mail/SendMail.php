@@ -12,16 +12,16 @@ class SendMail extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels, InteractsWithQueue;
 
-    public $testMailData;
+    // public $testMailData;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($testMailData)
+    public function __construct()
     {
-        $this->testMailData = $testMailData;
+        // $this->testMailData = $testMailData;
     }
 
     /**
@@ -31,7 +31,7 @@ class SendMail extends Mailable implements ShouldQueue
      */
     public function build()
     {
-        return $this->subject('Review from user')
-                    ->view('authormail');
+        return $this->subject('Review from use')
+                    ->view('feedbackMail');
     }
 }

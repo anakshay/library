@@ -50,6 +50,6 @@ class User extends Authenticatable
 
     public function book()
     {
-        return $this->belongsTo(Books::class,'id','users_id');
+        return $this->hasMany(Books::class,'id','users_id');
     }
 }

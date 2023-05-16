@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <title> {{$data['title']}}</title>
+    <title> review for book</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -13,7 +13,7 @@
     <div class="container">
         <div class="row">
             <h1>
-                thank you for your feedback 
+              this person is review on your book
             </h1>
         </div>
     </div>
