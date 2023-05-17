@@ -56,7 +56,7 @@ class BooksSeeder extends Seeder
         $data = new Books;
         $data->name = $faker->name;
         // $data->img = $faker->image('public/images/',300, 300);
-        $data->img = $randomImages[rand(1, 8)];
+        $data->img = $randomImages[rand(1, 16)];
         $data->description = $faker->paragraph(1);
         $data->genres_id  = $faker->randomElement($users2);
         $data->categories_id = $faker->randomElement($users);
