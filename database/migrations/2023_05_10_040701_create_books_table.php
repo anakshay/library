@@ -18,7 +18,7 @@ return new class extends Migration
             $table->text('description')->nullable();
             //  $table->foreignId('categories_id')->nullable()->constrained('categories');
             //  $table->foreignId('genres_id')->nullable()->constrained('genres');
-            $table->foreignId('users_id')->nullable()->constrained('users');
+          
              $table->foreignId('categories_id')->nullable()->constrained()->references('id')->on('categories');
              $table->foreignId('genres_id')->nullable()->constrained()->references('id')->on('genres');
             $table->timestamps();

@@ -43,13 +43,12 @@ class User extends Authenticatable
     ];
 
 
-    // public function userbook()
-    // {
-    //     return $this->belongsToMany(Books::class, 'users_books','user_id','book_id');
-    // }
+    
 
-    public function book()
+   
+   
+    public function review()
     {
-        return $this->hasMany(Books::class,'id','users_id');
+        return $this->hasMany(Reviews::class);
     }
 }

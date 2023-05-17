@@ -16,9 +16,6 @@ class Reviews extends Model
         'comment',
         'books_id'
     ];
-    public function Review()
-    {
-        return $this->hasMany(Books::class ,'id','books_id');
-    }
+    
     
 }

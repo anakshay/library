@@ -21,7 +21,7 @@
 @yield('content')
 
 @include('layouts.footer')
-
+@stack('scripts')  
 
   <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->

@@ -23,7 +23,7 @@ Auth::routes();
 
 Route::get('/home', [LibarayController::class, 'attach'])->name('home');
 
-// Route::get('add',[LibarayController::class,'addbooks']);
+
 Route::get('library',[LibarayController::class,'attach']);
 Route::group(['middleware' => 'auth'], function (){
 Route::get('review',[LibarayController::class,'review']);

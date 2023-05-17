@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Authors;
 use App\Models\Reviews;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+
 class Books extends Model
 {
     use HasFactory;
@@ -23,20 +25,10 @@ class Books extends Model
         return $this->belongsToMany(Authors::class);
     }
 
-
-    // public function rview()
-    // {
-    //     return $this->belongsToMany(Reviews::class, 'books_reviews','book_id','review_id');
-    // }
-
-    
-    public function user()
+   
+    public function review()
     {
-        return $this->hasMany(User::class, 'id','users_id');
-    }
-    public function reviewsed()
-    {
-        return $this->belongsTo(Reviews::class,'id','books_id');
+        return $this->hasMany(Reviews::class);
     }
     
     public function category()
@@ -50,6 +42,8 @@ class Books extends Model
         return  $this->hasMany(Genres::class,  'id','genres_id');
     }
 
+
+   
         public function getDescriptionAttribute($value){
             return  ucfirst($value);
         }
